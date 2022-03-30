@@ -1,0 +1,96 @@
+//
+//  main.cpp
+//  CSCI251-2122-LabEx2
+//
+//  Created by Yik Hin Garret Lai on 16/12/2021.
+//
+
+#include <iostream>
+using namespace std;
+
+float sum(float* arr, int size){
+    float sum = 0;
+    for(int i = 0; i < size; i++){
+        sum += arr[i];
+    }
+    return sum;
+}
+
+int* concatenate(int* arr1, int size1, int* arr2, int size2){
+    
+    int* arr3 = new int[size1+size2];
+    int i = 0;
+    for(; i < size1; i++){
+        arr3[i] = arr1[i];
+    }
+    for(; i < (size1+size2); i++){
+        arr3[i] = arr2[i-size1];
+    }
+    return arr3;
+}
+
+int* eliminate_duplicate(int* arr1, int& size){
+    int duplicate = 0;
+    for(int i = 0; i < size; i++){
+        for(int p = i+1; p < size; p++){
+            if(arr1[i] != -1 && arr1[i] == arr1[p]){
+                arr1[p] = -1;
+                duplicate++;
+            }
+        }
+    }
+    
+    int* newArr = new int[size - duplicate];
+    for(int i = 0, p = 0; i < size; i++){
+        if(arr1[i] != -1){
+            newArr[p] = arr1[i];
+            p++;
+        }
+    }
+    size -= duplicate;
+    return newArr;
+}
+
+int main(int argc, const char * argv[]) {
+    // insert code here...
+    cout << "=========Test Case for Q1=========" << endl;
+    const int size = 5;
+    float initialArr[size] = {0.8, 2.6, 9.0, 3.4, 7.1};
+    cout << sum(initialArr, size) << endl;//print 22.9
+    cout << "=========End of Test Case Q1=======\n" << endl;
+    
+    cout << "=========Test Case for Q2=========" << endl;
+    const int size1 = 7, size2 = 4;
+    int initialArr1[size1] = {58, 26, 91, 34, 70, 34, 88};
+    int initialArr2[size2] = {29, 41, 10, 66};
+    int* newArrQ2 = concatenate(initialArr1, size1, initialArr2, size2);
+    for(int i = 0; i < (size1+size2); i++){
+        cout << newArrQ2[i] << " ";   // print 58 26 91 34 70 34 88 29 41 10 66
+    }
+    cout << endl;
+    cout << "=========End of Test Case Q2=======\n" << endl;
+    
+    cout << "=========Test Case for Q3=========" << endl;
+    int sizeQ3 = 11;
+    int* inArr1 = new int[sizeQ3];
+    inArr1[0] = 58;
+    inArr1[1] = 26;
+    inArr1[2] = 91;
+    inArr1[3] = 26;
+    inArr1[4] = 70;
+    inArr1[5] = 70;
+    inArr1[6] = 91;
+    inArr1[7] = 58;
+    inArr1[8] = 58;
+    inArr1[9] = 58;
+    inArr1[10] = 66;
+   
+    int* newArrQ3 = eliminate_duplicate(inArr1, sizeQ3);
+    cout << "New Size: " << sizeQ3 << endl;  // print 5
+    for(int i = 0; i < (sizeQ3); i++){
+        cout << newArrQ3[i] << " ";   // print 58 26 91 70 66
+    }
+    cout << endl;
+    cout << "=========End of Test Case Q3=======\n" << endl;
+    return 0;
+}

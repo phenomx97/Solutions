@@ -1,0 +1,138 @@
+//
+//  main.cpp
+//  CSCI251-2122-LabEx3
+//
+//  Created by Yik Hin Garret Lai on 16/12/2021.
+//
+
+
+#include <iostream>
+#include <tuple>
+#include <vector>
+#include <numeric>
+
+using namespace std;
+
+//===========Q1 Solution Begins=========
+//Tuple
+
+tuple<int, double, string> q1() {
+    return make_tuple(1, 2.3, "456");
+}
+
+//=========Q1 Solution Ends============
+
+
+//=============Q2 Solution Begins=======
+
+//Variadic Template - Solution 1
+template<typename T0>
+void printQ2(T0 value) {
+    cout << value << " ";
+}
+
+template<typename T, typename... Ts>
+void printQ2(T value, Ts... args) {
+    cout << value << " ";
+    printQ2(args...);
+}
+
+//Variadic Template - Solution 2
+template<typename T0, typename...T>
+void printQ2_Alt(T0 t0, T... t){
+    cout << t0 << " ";
+    if constexpr (sizeof... (t) > 0)
+        printQ2_Alt(t...);
+}
+//========Q2 Solution Ends================
+
+//========Q3 Solution Begins==============
+auto get_student(int id) {
+    if (id == 0)
+        return make_tuple(3.8, 'A', "John");
+    if (id == 1)
+        return make_tuple(2.9, 'C', "Jack");
+    if (id == 2)
+        return make_tuple(1.7, 'D', "Ive");
+    // it is not allowed to return 0 directly
+    // return type is std::tuple<double, char, std::string>
+    return make_tuple(0.0, 'U', "Null");
+}
+//=======Q3 Solution Ends===============
+
+//========Q4 Solution Begins=========================
+template<typename T>
+concept Printable = requires (ostream& os, const T& msg){
+    {os << msg};
+};
+
+template <Printable T>
+void printQ4(const T& msg){
+    cout << msg;
+}
+
+class Foo{
+public:
+    int inData_ = 15;
+    
+    friend ostream& operator<<(ostream& os, const Foo& obj);
+};
+
+ostream& operator<<(ostream& os, const Foo& obj){
+    os << obj.inData_;
+    return os;
+}
+//================Q4 Solution Ends======================
+
+//================Q5 Solution Begins====================
+// The following codes are commented because the compiler does not support
+//void Q5(auto& v){
+//    auto results = v
+//        | ranges::views::filter([](int n){ return n % 3 != 0; })
+//        | ranges::views::transform([](int n){ return n * 5; })
+//        | ranges::views::take(4)        ;
+//    for (auto v: results) std::cout << v << " ";
+//}
+
+//================Q5 Solution Ends======================
+
+int main() {
+    cout<<"==========Test Case for Q1====================" << endl;
+    auto [x, y, z] = q1();
+    std::cout << x << ", " << y << ", " << z << std::endl;
+    cout<<"===========End of Test Case Q1=================" << endl;
+    cout << endl;
+    cout<<"==========Test Case for Q2====================" << endl;
+    
+    printQ2(1, 2, "123", 1.1);
+    cout << endl;
+    printQ2_Alt(3, 4, "567", 9.9);
+    cout << endl;
+    cout<<"==========End of Test Case Q2====================" << endl;
+    cout << endl;
+    cout<<"==========Test Case for Q3====================" << endl;
+    auto student = get_student(0); //JOHN
+    cout << "ID: 0, " << "GPA: " << get<0>(student) << ", "
+         << "Grade: " << get<1>(student)
+         << ", " << "Name: " << std::get<2>(student) << '\n';
+    double gpa;
+    char grade;
+    string name;
+    // unpack tuples
+    tie(gpa, grade, name) = get_student(1); //JACK
+    cout << "ID: 1, " << "GPA: " << gpa << ", " << "Grade: "
+         << grade << ", " << "Name: " << name << '\n';
+    cout<<"==========End of Test Case Q3====================" << endl;
+    cout << endl;
+    cout<<"==========Test Case for Q4====================" << endl;
+    Foo f;
+    printQ4(f);
+    cout << endl;
+    cout<<"==========End of Test Case Q4====================" << endl;
+    cout << endl;
+    cout<<"==========Test Case for Q5====================" << endl;
+    std::vector<int> numbers = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    //Q5(numbers);
+    cout<<"==========End of Test Case Q5====================" << endl;
+    return 0;
+}

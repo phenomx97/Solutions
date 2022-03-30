@@ -1,0 +1,86 @@
+//
+//  main.cpp
+//  CSCI251-LabEx1
+//
+//  Created by Yik Hin Garret Lai on 16/12/2021.
+//
+
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+using namespace std;
+
+int g_c_d(int x, int y){
+    if(x <= 0 || y <= 0)
+        return 0;
+    else{
+        int p = min(x, y);
+        int gcd = 1;
+        for(int i = 1; i <= p; i++){
+            if (x % i == 0 && y % i ==0){
+                gcd = i;
+            }
+        }
+        return gcd;
+    }
+}
+
+int is_prime(int val){
+    if (val <= 1){
+        return 0;
+    }
+    for(int i = 2; i <= ceil(sqrt(val)); i++){
+        if (val % i == 0){
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void swap_floats(float& x, float& y){
+    float temp = x;
+    x = y;
+    y = temp;
+}
+
+int sum_from_to(int x, int y){
+    int sum = 0;
+    int max_v = max(x, y);
+    int min_v = min(x, y);
+    for (;min_v<=max_v; min_v++){
+        sum+=min_v;
+    }
+    return sum;
+}
+int main(int argc, const char * argv[]) {
+    // insert code here...
+    cout << "=======Test cases of Q1===========" << endl;
+    cout << g_c_d(40,50) << endl; // will print 10
+    cout << g_c_d(256,625) << endl; // will print 1
+    cout << g_c_d(42,6) << endl; // will print 6
+    cout << g_c_d(0,32) << endl; // will print 0 (even though 32 is the g.c.d.)
+    cout << g_c_d(10,-6) << endl; // will print 0 (even though 2 is the g.c.d.)
+    cout << "============End of Q1===========\n" << endl;
+    
+    cout << "=======Test cases of Q2===========" << endl;
+    cout << is_prime(19) << endl; // will print 1
+    cout << is_prime(1) << endl; // will print 0
+    cout << is_prime(51) << endl; // will print 0
+    cout << is_prime(-13) << endl; // will print 0
+    cout << "============End of Q2===========\n" << endl;
+    
+    cout << "=======Test cases of Q3===========" << endl;
+    float x = 5.8, y = 0.9;
+    swap_floats (x, y);
+    cout << x << " " << y << endl; //then the output will be 0.9 5.8
+    cout << "============End of Q3===========\n" << endl;
+    
+    cout << "=======Test cases of Q4===========" << endl;
+    cout << sum_from_to(4,7) << endl; // will print 22 because 4+5+6+7 = 22
+    cout << sum_from_to(-3,1) << endl; // will print -5 'cause (-3)+(-2)+(-1)+0+1 = -5
+    cout << sum_from_to(7,4) << endl; // will print 22 because 7+6+5+4 = 22
+    cout << sum_from_to(9,9) << endl; // will print 9
+    cout << "============End of Q4===========\n" << endl;
+    
+    return 0;
+}
